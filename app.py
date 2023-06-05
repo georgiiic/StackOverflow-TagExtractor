@@ -44,5 +44,46 @@ def index():
                                user_body = question_body)
   
 
+def lemmatization(list_of_words):
+    """
+    Transform words into lemmas
+    
+    Args:
+        list_of_words(list): List of words
+        
+    Returns:
+        lemmatized(list): List of lemmatized words
+    """
+    
+    lemmatizer = WordNetLemmatizer()
+    lemmatized = []
+    
+    for word in list_of_words:
+        lemmatized.append(lemmatizer.lemmatize(word.lower()))
+        
+    return lemmatized
+
+def preprocess_text(text):
+    # Lowercase the text
+    cleaned_text = text.lower()
+    # Remove punctuations
+    cleaned_text = remove_punctuations(cleaned_text)
+    # Remove special characters
+    cleaned_text = remove_special_characters(cleaned_text)
+    # Remove stopwords
+    cleaned_text = remove_stopwords(cleaned_text)
+    # Remove numbers
+    cleaned_text = remove_numbers(cleaned_text)
+    # Remove short words
+    cleaned_text = remove_shortwords(cleaned_text)
+    # Tokenization
+    tokenized_text = word_tokenize(cleaned_text)
+    # Lemmatization
+    lemmatized_text = lemmatization(tokenized_text)
+    # Convert tokenized lemmatized text back to string
+    preprocessed_text = " ".join(lemmatized_text)
+    return preprocessed_text
+
+
 if __name__ == '__main__':
     app.run()
