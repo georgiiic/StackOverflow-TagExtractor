@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StackOverflow Tag Extractor</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .column {
+      flex: 1;
+      padding: 10px;
+    }
+
+    .left-column {
+      border-right: 1px solid #ccc;
+    }
+
+    .right-column {
+      padding-left: 10px;
+    }
+
+    body {
+      background-color: #FDA172;
+      color: #333;
+      font-family: Arial, sans-serif;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button[type="submit"] {
+      background-color: #f48024;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #e56e0f;
+    }
+
+    .column label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .column label:last-child {
+      margin-bottom: 0;
+    }
+
+    .column input[type="text"] {
+      background-color: #fff;
+    }
+
+    .column.right-column {
+      background-color: #f6f6f6;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+      text-align: center;
+      padding: 20px;
+      background-color: #f48024;
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">
+    StackOverflow <span style="color: black;">Tag Extractor</span>
+  </div>
+  <div class="container">
+    <div class="column left-column">
+      <form method="POST">
+        <label> Titre :</label>
+        <input type="text" name="question-title" value="{{user_title | safe }}"> <br>
+        <label> Corps :</label>
+        <input type="text" name="question-body" value="{{user_body | safe }}"> <br>
+        <button type="submit" name="submit">Predict</button>
+      </form>
+    </div>
+    <div class="column right-column">
+      <label>Tags proposés:</label>
+      <label>{{output | safe}}</label>
+    </div>
+  </div>
+</body>
+</html>
