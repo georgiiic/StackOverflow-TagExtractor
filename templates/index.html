@@ -37,12 +37,15 @@
     }
 
     input[type="text"],
+    textarea,
     button[type="submit"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      box-sizing: border-box;
+      word-wrap: break-word;
     }
 
     button[type="submit"] {
@@ -82,6 +85,20 @@
       font-size: 24px;
       font-weight: bold;
       text-transform: uppercase;
+      word-wrap: break-word;
+    }
+
+    /* Modified styles for larger input boxes */
+    textarea[name="question-title"] {
+      height: 70px;
+      resize: vertical;
+      overflow: auto;
+    }
+
+    textarea[name="question-body"] {
+      height: 250px;
+      resize: vertical;
+      overflow: auto;
     }
   </style>
 </head>
@@ -93,9 +110,9 @@
     <div class="column left-column">
       <form method="POST">
         <label> Titre :</label>
-        <input type="text" name="question-title" value="{{user_title | safe }}"> <br>
+        <textarea name="question-title">{{user_title | safe }}</textarea> <br>
         <label> Corps :</label>
-        <input type="text" name="question-body" value="{{user_body | safe }}"> <br>
+        <textarea name="question-body" rows="15">{{user_body | safe }}</textarea> <br>
         <button type="submit" name="submit">Predict</button>
       </form>
     </div>
