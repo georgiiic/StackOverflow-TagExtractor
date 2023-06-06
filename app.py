@@ -159,4 +159,4 @@ def get_tag_from_list(tags_list, tag_names):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
