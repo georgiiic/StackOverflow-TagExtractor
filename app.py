@@ -7,8 +7,8 @@ import nltk
 from neattext.functions import remove_punctuations, remove_special_characters, remove_stopwords, remove_numbers, remove_shortwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-
-
+nltk.download('punkt')
+nltk.download('wordnet')
 # Chargement du modèle OneVsRest SVM
 with open('models/SVMClassifier.pickle', 'rb') as f:
     model = pickle.load(f)
