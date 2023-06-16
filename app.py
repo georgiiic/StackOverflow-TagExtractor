@@ -9,13 +9,15 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
 nltk.download('wordnet')
+import tensorflow_hub as hub
+
+use_module_url = "https://tfhub.dev/google/universal-sentence-encoder/4"
+use_model = hub.load(use_module_url)
+
 # Chargement du modèle OneVsRest SVM
-with open('models/SVMClassifier.pickle', 'rb') as f:
+with open('models/svm_classifier_USE.pickle', 'rb') as f:
     model = pickle.load(f)
 
-# Chargement du TF-IDF Vectorizer
-with open('models/TFIDFVectorizer.pickle', 'rb') as f:
-    vectorizer = pickle.load(f)
 
 tag_names = ['.NET',
  '.NET-CORE',
@@ -89,10 +91,7 @@ def index():
         question_body = request.form.get("question-body")
         corpus = question_body + question_title
 
-        preprocessed_corpus = preprocess_text(corpus)
-
-        # Vectorisation des données
-        vectorized_data = vectorizer.transform([preprocessed_corpus])
+        vectorized_data = encode_text(corpus)
 
         # Prédiction avec le modèle
         predictions = model.predict(vectorized_data)
@@ -103,45 +102,8 @@ def index():
                                user_body = question_body)
   
 
-def lemmatization(list_of_words):
-    """
-    Transform words into lemmas
-    
-    Args:
-        list_of_words(list): List of words
-        
-    Returns:
-        lemmatized(list): List of lemmatized words
-    """
-    
-    lemmatizer = WordNetLemmatizer()
-    lemmatized = []
-    
-    for word in list_of_words:
-        lemmatized.append(lemmatizer.lemmatize(word.lower()))
-        
-    return lemmatized
-
-def preprocess_text(text):
-    # Lowercase the text
-    cleaned_text = text.lower()
-    # Remove punctuations
-    cleaned_text = remove_punctuations(cleaned_text)
-    # Remove special characters
-    cleaned_text = remove_special_characters(cleaned_text)
-    # Remove stopwords
-    cleaned_text = remove_stopwords(cleaned_text)
-    # Remove numbers
-    cleaned_text = remove_numbers(cleaned_text)
-    # Remove short words
-    cleaned_text = remove_shortwords(cleaned_text)
-    # Tokenization
-    tokenized_text = word_tokenize(cleaned_text)
-    # Lemmatization
-    lemmatized_text = lemmatization(tokenized_text)
-    # Convert tokenized lemmatized text back to string
-    preprocessed_text = " ".join(lemmatized_text)
-    return preprocessed_text
+def encode_text(text):
+    return use_model([text])[0]
 
 def get_tag_from_list(tags_list, tag_names):
     if len(tags_list) != len(tag_names):
